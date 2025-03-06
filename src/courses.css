@@ -151,35 +151,9 @@
   margin-bottom: 2rem;
   padding: 1rem 0;
   overflow-x: auto;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
-.category-filters::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for WebKit browsers */
-}
-
-.category-filters button {
-  background: #060ea6;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-
-.category-filters button:hover {
-  background: #03bcd5;
-}
-
-.category-filters button:active,
-.category-filters button:focus,
-.category-filters button.selected {
-  background: #007bff; /* Change to your primary color */
-  color: #fff;
-  font-weight: bold;
-}
-
 
 .category-filters::-webkit-scrollbar {
   display: none;

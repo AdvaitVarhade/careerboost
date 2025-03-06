@@ -9,12 +9,7 @@ import '../main.css';
 import '../resume.css';
 
 const Resume = ({ user, onLogout, setView }) => {
-  const [profile, setProfile] = useState({
-    skills: [],
-    education: {},
-    work_experience: {},
-    achievements: ''
-  });
+  const [profile, setProfile] = useState(null);
   const [template, setTemplate] = useState('modern'); // 'modern', 'classic'
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,56 +19,26 @@ const Resume = ({ user, onLogout, setView }) => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-        
-        if (error) {
-          console.error('Error fetching profile:', error);
-          // Initialize with default values if there's an error
-          setProfile({
-            skills: [],
-            education: {},
-            work_experience: {},
-            achievements: ''
-          });
-        } else {
-          setProfile(data || {
-            skills: [],
-            education: {},
-            work_experience: {},
-            achievements: ''
-          });
-        }
-        generateSuggestions(data || {
-          skills: [],
-          education: {},
-          work_experience: {},
-          achievements: ''
-        });
-      } catch (err) {
-        console.error('Error in fetchProfile:', err);
-        setProfile({
-          skills: [],
-          education: {},
-          work_experience: {},
-          achievements: ''
-        });
-      } finally {
-        setLoading(false);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (error) console.error(error);
+      else {
+        setProfile(data);
+        generateSuggestions(data);
       }
+      setLoading(false);
     };
     fetchProfile();
   }, [user]);
 
   const generateSuggestions = (profile) => {
     const sugg = [];
-    if (!profile.skills?.length) sugg.push('Add technical skills relevant to your field.');
-    if (!profile.education?.degree) sugg.push('Include your education details.');
-    if (!profile.work_experience?.role) sugg.push('Add at least one work experience entry.');
+    if (!profile.skills.length) sugg.push('Add technical skills relevant to your field.');
+    if (!profile.education.degree) sugg.push('Include your education details.');
+    if (!profile.work_experience.role) sugg.push('Add at least one work experience entry.');
     if (!profile.achievements) sugg.push('Highlight achievements to stand out.');
     setSuggestions(sugg);
   };
@@ -119,14 +84,14 @@ const Resume = ({ user, onLogout, setView }) => {
               <hr />
               <h2>Skills</h2>
               <div className="skills-tags">
-                {profile.skills?.map(skill => (
+                {profile.skills.map(skill => (
                   <span key={skill} className="skill-tag">{skill}</span>
                 ))}
               </div>
               <h2>Education</h2>
-              <p>{profile.education?.degree || 'Not provided'}</p>
+              <p>{profile.education.degree || 'Not provided'}</p>
               <h2>Work Experience</h2>
-              <p>{profile.work_experience?.role || 'Not provided'}</p>
+              <p>{profile.work_experience.role || 'Not provided'}</p>
               <h2>Achievements</h2>
               <p>{profile.achievements || 'None yet'}</p>
             </div>
@@ -137,16 +102,16 @@ const Resume = ({ user, onLogout, setView }) => {
               <div className="section">
                 <h2>Skills</h2>
                 <ul>
-                  {profile.skills?.map(skill => <li key={skill}>{skill}</li>)}
+                  {profile.skills.map(skill => <li key={skill}>{skill}</li>)}
                 </ul>
               </div>
               <div className="section">
                 <h2>Education</h2>
-                <p>{profile.education?.degree || 'Not provided'}</p>
+                <p>{profile.education.degree || 'Not provided'}</p>
               </div>
               <div className="section">
                 <h2>Work Experience</h2>
-                <p>{profile.work_experience?.role || 'Not provided'}</p>
+                <p>{profile.work_experience.role || 'Not provided'}</p>
               </div>
               <div className="section">
                 <h2>Achievements</h2>

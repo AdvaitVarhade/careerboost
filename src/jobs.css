@@ -73,7 +73,7 @@
 
 .filter-btn.active {
   background: var(--primary-color);
-  color: rgb(0, 36, 146);
+  color: white;
   border-color: var(--primary-color);
 }
 
@@ -496,7 +496,7 @@
 }
 
 .explore-btn {
-  background: #1976d2;
+  background: var(--primary-color);
   color: white;
   border: none;
   padding: 0.5rem 1rem;

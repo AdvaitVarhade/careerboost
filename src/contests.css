@@ -1,310 +1,118 @@
-/* Contests Container */
-.contests-container {
-  display: flex;
-  flex-direction: column;
+.contests-list {
+  display: grid;
   gap: 1rem;
   padding: 1rem;
-  height: calc(100vh - 4rem);
-  overflow: hidden;
 }
 
-/* Editor Controls */
-.editor-controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  background: var(--surface);
+.contest-card {
+  background: var(--card-bg);
+  border-radius: 8px;
   padding: 1rem;
-  border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.editor-controls select {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--text);
-  font-size: 0.9rem;
+.problems-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.problem-card {
+  background: var(--bg-secondary);
+  padding: 0.5rem;
+  border-radius: 4px;
   cursor: pointer;
-  min-width: 200px;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s;
 }
 
-.editor-controls select option {
-  background: var(--surface);
-  color: var(--text);
+.problem-card:hover {
+  background: var(--bg-hover);
 }
 
-.editor-controls select:hover {
-  border-color: var(--primary);
-}
-
-.editor-controls select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
-}
-
-/* Problem Selector */
-.problem-selector {
-  position: relative;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.problem-selector select {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1.5em;
-}
-
-.problem-selector select option {
-  background: var(--surface);
-  color: var(--text);
-}
-
-.problem-selector select:hover {
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
-
-.problem-selector select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
-}
-
-/* Dark mode specific styles */
-[data-theme="dark"] .editor-controls select,
-[data-theme="dark"] .problem-selector select {
-  background: var(--surface);
-  color: var(--text);
-  border-color: var(--border);
-}
-
-[data-theme="dark"] .editor-controls select option,
-[data-theme="dark"] .problem-selector select option {
-  background: var(--surface);
-  color: var(--text);
-}
-
-[data-theme="dark"] .editor-controls select:hover,
-[data-theme="dark"] .problem-selector select:hover {
-  border-color: var(--primary);
-}
-
-[data-theme="dark"] .editor-controls select:focus,
-[data-theme="dark"] .problem-selector select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
-}
-
-/* Code Editor */
 .code-editor {
-  background: var(--surface);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0; /* Important for nested flex containers */
-}
-
-.code-editor-header {
+  margin: 1rem;
   padding: 1rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--surface-lighter);
-}
-
-.code-editor-tools {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.code-editor-tools button {
-  padding: 0.75rem 1.5rem;
-  border: none;
+  background: var(--card-bg);
   border-radius: 8px;
-  background: var(--primary);
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
 }
 
-.code-editor-tools button:hover {
-  background: var(--primary-dark);
-  transform: translateY(-1px);
-}
-
-.code-editor-main {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0; /* Important for nested flex containers */
-  overflow: hidden;
-}
-
-.code-input {
-  flex: 1;
+.code-editor textarea {
+  width: 100%;
   min-height: 200px;
-  max-height: 50vh;
-  background: #1e1e1e;
-  border: none;
-  padding: 1.5rem;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: #d4d4d4;
-  resize: none;
-  overflow-y: auto;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  font-family: monospace;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
 }
 
-.output-section {
-  background: var(--surface-lighter);
-  border-top: 1px solid var(--border);
+.output {
+  margin-top: 1rem;
   padding: 1rem;
-  max-height: 40vh;
-  overflow-y: auto;
-  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-radius: 4px;
 }
 
-.output-panel {
-  margin-bottom: 1rem;
-}
-
-.output-panel h4 {
-  color: var(--text);
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-}
-
-.output-panel pre {
-  background: #1e1e1e;
-  padding: 1rem;
-  border-radius: 8px;
-  color: #d4d4d4;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 0;
+.output pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
-/* Test Cases */
-.test-cases {
-  background: var(--surface);
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.test-case {
-  background: var(--surface-lighter);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  border: 1px solid var(--border);
-}
-
-.test-case:last-child {
-  margin-bottom: 0;
-}
-
-.test-case pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 0.5rem 0 0 0;
-}
-
-/* Leaderboard */
 .leaderboard {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-}
-
-.leaderboard h3 {
-  color: var(--text);
-  margin-bottom: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 8px;
 }
 
 .leaderboard-section {
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
 }
 
-.leaderboard-section h4 {
-  color: var(--text);
-  margin-bottom: 0.5rem;
-}
-
-.leaderboard-list {
+.leaderboard-section ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.leaderboard-item {
+.leaderboard-section li {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.problem-form-container {
+  margin: 1rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+}
+
+.problem-form {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  background: var(--surface-lighter);
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
-  border: 1px solid var(--border);
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.leaderboard-item .rank {
-  font-weight: bold;
-  color: var(--primary);
+.problem-form input,
+.problem-form textarea,
+.problem-form select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
-.leaderboard-item .score {
-  font-weight: bold;
-  color: var(--text);
+.problem-form button {
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .contests-container {
-    padding: 1rem;
-  }
-  
-  .editor-controls {
-    flex-direction: column;
-  }
-  
-  .editor-controls select {
-    width: 100%;
-  }
-  
-  .code-editor-tools {
-    flex-direction: column;
-  }
-  
-  .code-editor-tools button {
-    width: 100%;
-    justify-content: center;
-  }
+.problem-form button:hover {
+  background: var(--primary-hover);
 } 
