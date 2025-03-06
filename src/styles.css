@@ -1,0 +1,668 @@
+/* src/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --primary: #1E40AF; /* Blue */
+  --secondary: #F3F4F6; /* Light gray */
+  --accent: #10B981; /* Green */
+  --text-primary: #1E40AF;
+  --text-secondary: #666;
+  --white: #fff;
+  --red: #EF4444; /* For wishlist heart */
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}const userName = user?.email ? user.email.split('@')[0] : 'User';
+const userEmail = user?.email || 'Email not provided';const fileName = user?.email ? `${user.email.split('@')[0]}_resume.pdf` : 'resume.pdf';
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom right, var(--secondary), #e5e7eb);
+  min-height: 100vh;
+  color: var(--text-secondary);
+}
+
+/* Auth */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.auth-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 25rem;
+}
+
+.auth-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.auth-card p {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.75rem 2.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.auth-form .input-wrapper {
+  position: relative;
+}
+
+.auth-form svg {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.auth-form button {
+  width: 100%;
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.auth-form button:hover {
+  background: #1e3a8a;
+}
+
+.auth-form button:disabled {
+  background: #a3bffa;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  color: var(--red);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth-toggle {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth-toggle button {
+  background: none;
+  color: var(--primary);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-toggle button:hover {
+  text-decoration: underline;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 18rem;
+  background: var(--primary);
+  color: var(--white);
+  height: 100vh;
+  padding: 2rem;
+  position: fixed;
+  box-shadow: var(--shadow);
+  transition: width 0.3s ease;
+}
+
+.sidebar:hover {
+  width: 19rem;
+}
+
+.sidebar h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.025em;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li.active {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.sidebar li:hover:not(.disabled) {
+  color: var(--accent);
+}
+
+.sidebar li.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.sidebar li svg {
+  margin-right: 0.75rem;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 18rem;
+  padding: 2.5rem;
+}
+
+.header {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.header:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+.header h2 span {
+  color: var(--accent);
+}
+
+.header button {
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow);
+  transition: background 0.3s ease;
+}
+
+.header button:hover {
+  background: #059669;
+}
+
+/* Profile */
+.profile-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.profile-card h3 svg {
+  margin-right: 0.5rem;
+  color: var(--accent);
+}
+
+.profile-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.profile-form label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.profile-form input,
+.profile-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.profile-form input:focus,
+.profile-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.profile-form textarea {
+  grid-column: span 2;
+  resize: vertical;
+}
+
+.profile-form button {
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.profile-form button:hover {
+  background: #1e3a8a;
+}
+
+.profile-display p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.profile-display p strong {
+  width: 8rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.profile-display .role-tag {
+  background: var(--secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+}
+
+.profile-display .skill-tag {
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-right: 0.5rem;
+}
+
+/* Jobs */
+.jobs-search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.jobs-search .input-wrapper {
+  position: relative;
+}
+
+.jobs-search input {
+  padding: 0.5rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.jobs-search input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.jobs-search svg {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.jobs-search select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.jobs-search select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.job-posting {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2.5rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.job-posting:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.job-posting h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.job-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.job-form input,
+.job-form textarea,
+.job-form select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.job-form input:focus,
+.job-form textarea:focus,
+.job-form select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.job-form textarea {
+  grid-column: span 2;
+  resize: vertical;
+}
+
+.job-form button {
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.job-form button:hover {
+  background: #1e3a8a;
+}
+
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1.5rem;
+}
+
+.job-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.job-card h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.job-card p {
+  margin-top: 0.25rem;
+}
+
+.job-card .skills-tags {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.job-card .skill-tag {
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.job-card .type-tag {
+  background: var(--secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.job-card .action-bar {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.job-card button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.job-card button:hover {
+  color: var(--red);
+}
+
+/* Courses (already defined, included for completeness) */
+.courses-section, .roadmaps-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.section-title svg {
+  margin-right: 0.5rem;
+  color: var(--accent);
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1.5rem;
+}
+
+.course-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.course-card h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.course-card p {
+  margin-top: 0.25rem;
+}
+
+.skills-tags {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.action-bar {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-bar button {
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transição: background 0.3s ease;
+}
+
+.action-bar button:hover {
+  background: #1e3a8a;
+}
+
+.progress-input {
+  display: flex;
+  align-items: center;
+}
+
+.progress-input input {
+  width: 4rem;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.progress-input span {
+  margin-left: 0.5rem;
+}
+
+.roadmap-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.roadmap-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.roadmap-card h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.roadmap-card ol {
+  padding-left: 1rem;
+}
+
+.roadmap-card li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.roadmap-card li svg {
+  margin-right: 0.5rem;
+  color: var(--accent);
+}
+
+/* Spinner */
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.spinner div {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid var(--primary);
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

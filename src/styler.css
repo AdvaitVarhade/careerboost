@@ -1,0 +1,118 @@
+/* Resume */
+.resume-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .resume-controls select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .resume-controls select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+  }
+  
+  .resume-preview {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2.5rem;
+  }
+  
+  /* Modern Template */
+  .resume-modern {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .resume-modern h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume-modern p {
+    color: var(--text-secondary);
+  }
+  
+  .resume-modern hr {
+    border: none;
+    height: 2px;
+    background: var(--primary);
+    margin: 1rem 0;
+  }
+  
+  .resume-modern h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Classic Template */
+  .resume-classic {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .resume-classic h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .resume-classic p {
+    text-align: center;
+    color: var(--text-secondary);
+  }
+  
+  .resume-classic .section {
+    margin-top: 1.5rem;
+  }
+  
+  .resume-classic h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--primary);
+    padding-bottom: 0.25rem;
+  }
+  
+  .resume-classic ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Suggestions */
+  .suggestions {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow);
+  }
+  
+  .suggestions h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  
+  .suggestions ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+  
+  .suggestions li {
+    margin-bottom: 0.5rem;
+  }
