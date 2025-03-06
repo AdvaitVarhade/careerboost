@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { FaUser, FaSignOutAlt, FaTrophy, FaBook, FaBriefcase, FaFileAlt, FaTasks, FaComments, FaUsers, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import Sidebar from './Sidebar';
 import '../stylef.css';
 
 const Forum = ({ user, onLogout, setView }) => {
@@ -123,7 +122,21 @@ const Forum = ({ user, onLogout, setView }) => {
 
   return (
     <div className="flex">
-      <Sidebar currentView="forum" setView={setView} onLogout={onLogout} />
+      {/* Sidebar */}
+      <div className="sidebar">
+        <h1>CareerBoost</h1>
+        <ul>
+          <li onClick={() => setView('profile')}><FaUser /> Profile</li>
+          <li onClick={() => setView('jobs')}><FaBriefcase /> Jobs</li>
+          <li onClick={() => setView('courses')}><FaBook /> Courses</li>
+          <li onClick={() => setView('resume')}><FaFileAlt /> Resume</li>
+          <li onClick={() => setView('tasks')}><FaTasks /> Tasks</li>
+          <li onClick={() => setView('contests')}><FaTrophy /> Contests</li>
+          <li onClick={() => setView('interview')}><FaComments /> Interview</li>
+          <li className="active"><FaUsers /> Forum</li>
+          <li onClick={onLogout}><FaSignOutAlt /> Logout</li>
+        </ul>
+      </div>
 
       {/* Main Content */}
       <div className="main-content">

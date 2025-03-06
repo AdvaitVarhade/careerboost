@@ -1,15 +1,31 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import axios from 'axios';
-import { FaUser, FaSignOutAlt, FaTrophy, FaBook, FaBriefcase, FaFileAlt, FaTasks, FaCode } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaTrophy, FaBook, FaBriefcase, FaFileAlt, FaTasks, FaCode, FaPlay, FaStop, FaSave, FaCheck, FaTimes, FaPalette } from 'react-icons/fa';
 import Sidebar from './Sidebar';
 import '../global.css';
 import '../sidebar.css';
 import '../main.css';
-import '../stylec.css';
+import '../contests.css';
 
 const JUDGE0_API_KEY = '790ec0e011msh28fee3e4e8f7e56p1ba8d9jsne0623b5e7bf8'; // Replace with your RapidAPI key
 const JUDGE0_URL = 'https://judge0-ce.p.rapidapi.com/submissions';
+
+const LANGUAGES = [
+  { id: 63, name: 'JavaScript (Node.js)', icon: '⚡' },
+  { id: 71, name: 'Python', icon: '🐍' },
+  { id: 54, name: 'C++', icon: '⚙️' },
+  { id: 50, name: 'C', icon: '🔧' },
+  { id: 62, name: 'Java', icon: '☕' }
+];
+
+const THEMES = [
+  { id: 'monokai', name: 'Monokai', preview: '#272822' },
+  { id: 'dracula', name: 'Dracula', preview: '#282a36' },
+  { id: 'nord', name: 'Nord', preview: '#2e3440' },
+  { id: 'github', name: 'GitHub', preview: '#0d1117' },
+  { id: 'solarized', name: 'Solarized', preview: '#002b36' }
+];
 
 const Contests = ({ user, onLogout, setView }) => {
   const [profile, setProfile] = useState(null);
@@ -21,6 +37,9 @@ const Contests = ({ user, onLogout, setView }) => {
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(true);
+  const [testResults, setTestResults] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState(LANGUAGES[0]);
+  const [selectedTheme, setSelectedTheme] = useState(THEMES[0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,23 +127,25 @@ const Contests = ({ user, onLogout, setView }) => {
           status = result.data.status.id;
           if (status === 3) { // Accepted
             const stdout = result.data.stdout ? result.data.stdout.trim() : '';
-            results.push({ input: test.input, output: stdout, expected: test.output });
+            results.push({ input: test.input, output: stdout, expected: test.output, passed: stdout === test.output.trim() });
             if (stdout === test.output.trim()) score += 100 / problem.test_cases.length;
           } else if (status > 3) { // Error or Wrong Answer
             results.push({
               input: test.input,
               output: result.data.stderr || result.data.stdout || `Error (Status: ${result.data.status.description})`,
               expected: test.output,
+              passed: false
             });
             break;
           }
         } while (status <= 2); // In Queue or Processing
       } catch (e) {
         console.error('Judge0 API error:', e.response ? e.response.data : e.message);
-        results.push({ input: test.input, output: 'API Error', expected: test.output });
+        results.push({ input: test.input, output: 'API Error', expected: test.output, passed: false });
       }
     }
   
+    setTestResults(results);
     setOutput(results.map(r => `Input: ${r.input}\nOutput: ${r.output}\nExpected: ${r.expected}`).join('\n\n'));
     return Math.round(score);
   };
@@ -211,43 +232,102 @@ const Contests = ({ user, onLogout, setView }) => {
           </div>
         )}
 
-        {/* Contests & Problems */}
-        <div className="contests-list">
-          <h3>Active Contests</h3>
-          {contests.map(contest => (
-            <div key={contest.id} className="contest-card">
-              <h4>{contest.title}</h4>
-              <p>Start: {contest.start_time ? new Date(contest.start_time).toLocaleString() : 'TBD'}</p>
-              <p>End: {contest.end_time ? new Date(contest.end_time).toLocaleString() : 'TBD'}</p>
-              <div className="problems-list">
-                {problems.filter(p => p.contest_id === contest.id).map(problem => (
-                  <div key={problem.id} className="problem-card" onClick={() => setSelectedProblem(problem)}>
-                    <h5>{problem.title}</h5>
-                    <p>{problem.description.slice(0, 100)}...</p>
-                  </div>
-                ))}
+        <div className="contests-container">
+          {/* Problem Selector */}
+          <div className="problem-selector">
+            <select 
+              value={selectedProblem?.id || ''} 
+              onChange={(e) => {
+                const problem = problems.find(p => p.id === parseInt(e.target.value));
+                setSelectedProblem(problem);
+                setCode('');
+                setOutput('');
+                setTestResults([]);
+              }}
+            >
+              <option value="">Select a Problem</option>
+              {problems.map(problem => (
+                <option key={problem.id} value={problem.id}>
+                  {problem.title} - {contests.find(c => c.id === problem.contest_id)?.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Editor Controls */}
+          <div className="editor-controls">
+            <select
+              value={selectedLanguage.id}
+              onChange={(e) => setSelectedLanguage(LANGUAGES.find(l => l.id === parseInt(e.target.value)))}
+            >
+              {LANGUAGES.map(lang => (
+                <option key={lang.id} value={lang.id}>
+                  {lang.icon} {lang.name}
+                </option>
+              ))}
+            </select>
+            <select
+              value={selectedTheme.id}
+              onChange={(e) => setSelectedTheme(THEMES.find(t => t.id === e.target.value))}
+            >
+              {THEMES.map(theme => (
+                <option key={theme.id} value={theme.id}>
+                  <FaPalette /> {theme.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Code Editor */}
+          <div className="code-editor">
+            <div className="code-editor-header">
+              <h3>{selectedProblem?.title || 'Select a Problem'}</h3>
+              <div className="code-editor-tools">
+                <button onClick={() => setCode('')}>
+                  <FaStop /> Reset
+                </button>
+                <button onClick={handleSubmitCode}>
+                  <FaPlay /> Run
+                </button>
+                <button onClick={handleSubmitCode}>
+                  <FaSave /> Submit
+                </button>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Code Editor */}
-        {selectedProblem && (
-          <div className="code-editor">
-            <h3>{selectedProblem.title}</h3>
-            <textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Write your JavaScript code here..."
-              rows="10"
-            />
-            <button onClick={handleSubmitCode}>Submit Code</button>
-            <div className="output">
-              <h4>Output</h4>
-              <pre>{output}</pre>
+            <div className="code-editor-main">
+              <textarea
+                className="code-input"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder={`Write your ${selectedLanguage.name} code here...`}
+                style={{ backgroundColor: selectedTheme.preview }}
+              />
+              <div className="output-section">
+                <div className="output-panel">
+                  <h4>Output</h4>
+                  <pre>{output || 'No output yet'}</pre>
+                </div>
+                {testResults.length > 0 && (
+                  <div className="test-cases">
+                    <h4>Test Cases</h4>
+                    {testResults.map((result, index) => (
+                      <div key={index} className="test-case">
+                        <div className="test-case-header">
+                          <span>Test Case {index + 1}</span>
+                          <span className={`test-case-status ${result.passed ? 'passed' : 'failed'}`}>
+                            {result.passed ? <FaCheck /> : <FaTimes />}
+                            {result.passed ? 'Passed' : 'Failed'}
+                          </span>
+                        </div>
+                        <pre>Input: {result.input}\nExpected: {result.expected}\nOutput: {result.output}</pre>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Leaderboard */}
         <div className="leaderboard">
@@ -255,9 +335,13 @@ const Contests = ({ user, onLogout, setView }) => {
           {leaderboard.map(({ contest, scores }) => (
             <div key={contest.id} className="leaderboard-section">
               <h4>{contest.title}</h4>
-              <ul>
-                {scores.map(([userId, score]) => (
-                  <li key={userId}>{userId.slice(0, 8)}...: {score}</li>
+              <ul className="leaderboard-list">
+                {scores.map(([userId, score], index) => (
+                  <li key={userId} className="leaderboard-item">
+                    <span className="rank">#{index + 1}</span>
+                    <span className="user">{userId.slice(0, 8)}...</span>
+                    <span className="score">{score} points</span>
+                  </li>
                 ))}
               </ul>
             </div>
