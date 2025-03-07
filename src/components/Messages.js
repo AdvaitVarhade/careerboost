@@ -12,16 +12,51 @@ const Messages = ({ user, onLogout, setView }) => {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
 
+
+  const handleOnClick = (userId) => {
+    setView({ view: 'singleMessage', otherUserId: userId });
+  };
+
   useEffect(() => {
     const fetchMessages = async () => {
-      const { data, error } = await supabase
+      // const { data, error } = await supabase
+      //   .from('messages')
+      //   .select('*')
+      //   .eq('user_id', user.id)
+      //   .order('created_at', { ascending: false });
+      const { data: messages, error: fetchingMessagesError } = await supabase
         .from('messages')
         .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        .or(`sender_id.eq.${user.user.id},receiver_id.eq.${user.user.id}`) // Filter messages where the user is either sender or receiver
+        .order('created_at', { ascending: false })
+        .limit(100);
       
-      if (error) console.error('Error fetching messages:', error);
-      else setMessages(data || []);
+      const userSet = new Set();
+      const finalMessages = [];
+      for (let i = 0; i < messages.length; i++){
+        const message = messages[i];
+        if (userSet.has(message.sender_id == user.user.id? message.receiver_id: message.sender_id)){
+          continue;
+        }
+        const { data: senderReceiverData, error: fetchingProfilesError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', message.sender_id == user.user.id? message.receiver_id: message.sender_id);
+        
+        userSet.add(message.sender_id == user.user.id? message.receiver_id: message.sender_id);
+        
+        message.senderReceiverData = senderReceiverData;
+
+        finalMessages.push(message);
+        
+        if (fetchingProfilesError){
+          console.error('Error received while fetching sender receiver data', fetchingProfilesError);
+        }
+      }
+      
+
+      if (fetchingMessagesError) console.error('Error fetching messages:', fetchingMessagesError);
+      else setMessages(finalMessages || []);
       setLoading(false);
     };
     fetchMessages();
@@ -70,10 +105,10 @@ const Messages = ({ user, onLogout, setView }) => {
         <div className="messages-container">
           <div className="messages-list">
             {messages.map(message => (
-              <div key={message.id} className="message-card">
+              <div key={message.id} className="message-card" onClick={() => handleOnClick(message.senderReceiverData[0].id)}>
                 <div className="message-header">
                   <FaEnvelope className="message-icon" />
-                  <span className="message-sender">{message.sender}</span>
+                  <span className="message-sender">{message.senderReceiverData[0].email}</span>
                   <span className="message-time">
                     {new Date(message.created_at).toLocaleString()}
                   </span>
@@ -85,7 +120,7 @@ const Messages = ({ user, onLogout, setView }) => {
             ))}
           </div>
 
-          <form className="message-form" onSubmit={handleSendMessage}>
+          {/* <form className="message-form" onSubmit={handleSendMessage}>
             <input
               type="text"
               value={newMessage}
@@ -95,7 +130,7 @@ const Messages = ({ user, onLogout, setView }) => {
             <button type="submit">
               <FaPaperPlane /> Send
             </button>
-          </form>
+          </form> */}
         </div>
       </div>
     </div>

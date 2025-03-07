@@ -12,6 +12,7 @@ import Forum from './components/Forum';
 import Dashboard from './components/Dashboard';
 import People from './components/People';
 import Messages from './components/Messages';
+import SingleMessage from './components/SingleMessage';
 import FloatingActionButton from './components/FloatingActionButton';
 import './global.css';
 
@@ -73,8 +74,10 @@ function App() {
             <Forum user={session} onLogout={handleLogout} setView={setView} />
           ) : view === 'people' ? (
             <People user={session} onLogout={handleLogout} setView={setView} />
-          ) : (
+          ) : view === 'messages' ? (
             <Messages user={session} onLogout={handleLogout} setView={setView} />
+          ): (
+            <SingleMessage user={session} onLogout={handleLogout} setView={setView} otherUserId={view.otherUserId} />
           )}
           <FloatingActionButton />
         </>
